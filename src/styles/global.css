@@ -252,9 +252,7 @@ a:hover { border-bottom-color: var(--accent); }
 .sidebar {
   width: 340px;
   flex: 0 0 340px;
-  background: color-mix(in srgb, var(--surface) 80%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface);
   border-right: 1px solid var(--border);
   overflow-y: auto;
   padding: 1.25rem;
@@ -2373,8 +2371,6 @@ a:hover { border-bottom-color: var(--accent); }
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -2409,9 +2405,9 @@ a:hover { border-bottom-color: var(--accent); }
   .topbar .metrics,
   .topbar .topbar-meta { grid-area: meta; justify-self: stretch; }
 
-  .topbar .brand h1 { font-size: 1.05rem; }
-  .topbar .eyebrow { font-size: 0.62rem; }
-  .topbar .logo-mark { width: 36px; height: 36px; }
+  /* Hide brand text on mobile, keep only logo to free horizontal space */
+  .topbar .brand-text { display: none; }
+  .topbar .logo-mark { width: 40px; height: 40px; }
 
   .topbar-center { gap: 0.4rem; }
   .page-nav { padding: 3px; }
@@ -2497,26 +2493,66 @@ a:hover { border-bottom-color: var(--accent); }
   .map-wrap { min-height: 70vh; }
 
   /* ---- Stats page reflow ---- */
-  .stats-main { padding: 1.1rem max(0.85rem, env(safe-area-inset-left)) 3rem max(0.85rem, env(safe-area-inset-left)); gap: 1.25rem; }
-  .hero { padding: 1.5rem 1.1rem 1.2rem; }
-  .hero-title { font-size: clamp(1.4rem, 7vw, 2rem); }
-  .hero-sub { font-size: 0.85rem; }
+  body.page-stats { overflow-x: hidden; }
+  .stats-main {
+    padding: 1.1rem max(0.85rem, env(safe-area-inset-left)) 3rem max(0.85rem, env(safe-area-inset-left));
+    gap: 1.1rem;
+    max-width: 100%;
+  }
+  .hero { padding: 1.4rem 1.1rem 1.1rem; border-radius: 12px; }
+  .hero-title { font-size: clamp(1.4rem, 7vw, 2rem); margin: 0.6rem 0 0.5rem; }
+  .hero-sub { font-size: 0.85rem; margin: 0 0 1.4rem; }
+  .hero-eyebrow { font-size: 0.62rem; padding: 0.3rem 0.65rem; }
 
-  .section-head { flex-direction: column; align-items: flex-start; gap: 0.65rem; }
-  .section-head > div:first-child { width: 100%; }
+  .section-head { flex-direction: column; align-items: stretch; gap: 0.7rem; padding-bottom: 0.75rem; margin-bottom: 1rem; }
+  .section-head > div:first-child { width: 100%; flex-wrap: wrap; }
+  .section-head h3 { font-size: 1rem; }
   .section-head .tabs,
-  .section-head .day-controls { width: 100%; justify-content: flex-start; }
+  .section-head .day-controls {
+    width: 100%;
+    justify-content: stretch;
+    box-sizing: border-box;
+  }
+  .section-head .tabs { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .section-head .tab { padding: 0.5rem 0.4rem; font-size: 0.66rem; min-height: 38px; }
 
-  .stats-section { padding: 1.1rem 1rem 1.2rem; border-radius: 12px; }
-  .sub-card { padding: 1.1rem 1rem; border-radius: 12px; }
+  .stats-section { padding: 1rem 0.95rem 1.1rem; border-radius: 12px; }
+  .sub-card { padding: 1rem 0.95rem; border-radius: 12px; }
 
+  /* Day picker controls fit phone width */
+  .day-controls { padding: 3px; gap: 0.35rem; }
+  .day-step { flex: 0 0 auto; }
+  .day-input { flex: 1 1 auto; min-width: 0; padding: 0.45rem 0.4rem; font-size: 0.78rem; }
+
+  /* Chart containers full width */
+  .chart-main { height: 260px; }
+  .months-bar { height: 170px; }
+
+  /* KPI cards: tighter */
+  .kpi-card { padding: 0.85rem 0.9rem 0.95rem; }
+  .kpi-label { font-size: 0.6rem; }
+  .kpi-value { font-size: clamp(1.15rem, 5vw, 1.5rem); }
+  .kpi-delta { font-size: 0.65rem; }
+
+  /* Weekdays heatmap: ensure cells are square and not too small */
+  .weekdays { gap: 4px; }
+  .weekday { padding: 0.4rem 0.35rem; }
+  .weekday-label { font-size: 0.6rem; }
+  .weekday-value { font-size: 0.85rem; }
+
+  /* Footer stats */
+  .stats-footer { padding: 1rem 0.5rem; flex-direction: column; align-items: flex-start; gap: 0.5rem; font-size: 0.78rem; }
+
+  /* Ranking table */
   .rank-table .col-from { display: none; }
   .rank-table th, .rank-table td { padding: 0.55rem 0.5rem; font-size: 0.85rem; }
-  .rank-table .col-name { max-width: 160px; }
+  .rank-table .col-name { max-width: 140px; }
+  .rank-table .col-val { min-width: 80px; }
+  .rank-table .col-rank { width: 32px; }
 
-  .day-summary { grid-template-columns: 1fr; gap: 0.55rem; }
+  .day-summary { grid-template-columns: 1fr; gap: 0.55rem; margin-bottom: 1rem; }
   .day-card { min-height: 0; padding: 0.85rem 0.95rem; }
-  .day-card .day-value { font-size: 1.25rem; }
+  .day-card .day-value { font-size: 1.2rem; }
 
   /* Loader respects safe area */
   .loader { bottom: max(14px, env(safe-area-inset-bottom)); }
@@ -2546,8 +2582,6 @@ a:hover { border-bottom-color: var(--accent); }
 
 /* Tiny phones */
 @media (max-width: 420px) {
-  .topbar .brand .eyebrow { display: none; }
-  .topbar .brand h1 { font-size: 0.95rem; }
   .nav-link { padding: 0.35rem 0.55rem; font-size: 0.6rem; }
   .metric-value { font-size: 0.92rem; }
 
