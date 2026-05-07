@@ -1,0 +1,97 @@
+---
+import Base from "../layouts/Base.astro";
+import Topbar from "../components/Topbar.astro";
+---
+<Base title="Fonti dati — Ciclabili Torino" description="Da dove arrivano i dati di Ciclabili Torino: Comune di Torino, OpenStreetMap, CARTO." bodyClass="page-stats">
+  <Topbar active="fonti">
+    <div slot="right" class="topbar-meta">
+      <span class="eyebrow">grazie a chi rende tutto pubblico</span>
+    </div>
+  </Topbar>
+
+  <main class="stats-main">
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="hero-eyebrow">
+          <span class="pulse"></span>
+          Open data &middot; tutto pubblico, niente magie
+        </span>
+        <h2 class="hero-title">Da dove arrivano i <span class="accent-text">dati</span></h2>
+        <p class="hero-sub">
+          Niente è inventato. La mappa e i numeri che vedi vengono da tre posti: il
+          <strong>Comune di Torino</strong>, la community di <strong>OpenStreetMap</strong>
+          e <strong>CARTO</strong> per lo sfondo. Tutto open, gratis, accessibile a chiunque.
+          Grazie a loro!
+        </p>
+      </div>
+    </section>
+
+    <section class="source-card">
+      <div class="source-head">
+        <span class="source-num">01</span>
+        <div class="source-title">
+          <h3>I conteggi dei ciclisti</h3>
+          <span class="source-org">Comune di Torino, con i sensori Eco-Counter installati da 5T</span>
+        </div>
+        <a class="source-cta" href="https://data.eco-counter.com/ParcPublic/?id=6771" target="_blank" rel="noreferrer">Dashboard ufficiale &rarr;</a>
+      </div>
+      <p class="source-desc">
+        In giro per Torino ci sono <strong>34 sensori sotto l'asfalto</strong> che contano i
+        ciclisti che passano. Sono in posti come corso Francia, via Nizza, lungo Dora,
+        parco Valentino, corso Castelfidardo. I dati vengono pubblicati ogni giorno
+        sulla loro dashboard pubblica e qui ti mostriamo gli stessi numeri, in modo
+        più "umano" da consultare. Storico disponibile dal maggio 2019.
+      </p>
+    </section>
+
+    <section class="source-card">
+      <div class="source-head">
+        <span class="source-num">02</span>
+        <div class="source-title">
+          <h3>Le ciclabili sulla mappa</h3>
+          <span class="source-org">OpenStreetMap &middot; mappata dalla community</span>
+        </div>
+        <a class="source-cta" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">Cos'è OSM &rarr;</a>
+      </div>
+      <p class="source-desc">
+        Le linee colorate (piste dedicate, corsie, ciclopedonali) sono mappate dai
+        volontari di OpenStreetMap, una specie di "Wikipedia delle mappe". Se ne vedi
+        una sbagliata o mancante, chiunque può correggerla &mdash; pure tu. Noi
+        prendiamo una fotografia di quei dati e la mostriamo qui colorata.
+      </p>
+      <div class="source-grid">
+        <div class="source-fact"><span class="fact-label">Aggiornamento</span><span class="fact-value">snapshot manuale, ri-fatto quando serve</span></div>
+        <div class="source-fact"><span class="fact-label">Licenza</span><span class="fact-value">ODbL (basta citare la fonte)</span></div>
+        <div class="source-fact"><span class="fact-label">Dimensione</span><span class="fact-value">circa 1700 segmenti su Torino</span></div>
+      </div>
+    </section>
+
+    <section class="source-card">
+      <div class="source-head">
+        <span class="source-num">03</span>
+        <div class="source-title">
+          <h3>Lo sfondo della mappa</h3>
+          <span class="source-org">CARTO &middot; sopra ai dati di OpenStreetMap</span>
+        </div>
+        <a class="source-cta" href="https://carto.com/attributions" target="_blank" rel="noreferrer">Grazie CARTO &rarr;</a>
+      </div>
+      <p class="source-desc">
+        Strade, edifici e parchi che vedi "sotto" alle ciclabili sono i basemap gratuiti
+        di CARTO: una versione scura per il tema dark, una chiara per il tema light.
+        Niente di nostro, solo bei mattoncini di mappa.
+      </p>
+    </section>
+
+    <section class="source-card source-thanks">
+      <p>
+        Insomma: tutto quello che vedi qui è merito di chi rilascia i dati al pubblico.
+        Noi ci abbiamo solo messo l'interfaccia per renderli più digeribili. Grazie
+        mille, ciao 👋
+      </p>
+    </section>
+
+    <footer class="stats-footer">
+      <div><span class="src-label">Dati</span><span class="mono">Comune di Torino &middot; OpenStreetMap &middot; CARTO</span></div>
+    </footer>
+  </main>
+</Base>

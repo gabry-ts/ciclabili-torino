@@ -1,0 +1,132 @@
+---
+import Base from "../layouts/Base.astro";
+import Topbar from "../components/Topbar.astro";
+---
+<Base title="Statistiche ciclabili Torino" bodyClass="page-stats">
+  <Topbar active="stats">
+    <div slot="right" class="topbar-meta">
+      <span class="eyebrow" id="data-range">—</span>
+    </div>
+  </Topbar>
+
+  <main class="stats-main">
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="hero-eyebrow">
+          <span class="pulse"></span>
+          Dati aggiornati &middot; <span id="hero-update">—</span>
+        </span>
+        <h2 class="hero-title">Passaggi ciclisti su <span class="accent-text">Torino</span></h2>
+        <p class="hero-sub">Aggregato di <strong id="hero-ncounters">—</strong> contatori gestiti dal Comune, dal <strong id="hero-from">—</strong> a oggi.</p>
+
+        <div class="kpi-row">
+          <div class="kpi-card primary"><span class="kpi-label">Totale storico</span><span class="kpi-value" id="kpi-total">—</span><span class="kpi-delta" id="kpi-total-meta">&nbsp;</span></div>
+          <div class="kpi-card"><span class="kpi-label">Ieri</span><span class="kpi-value" id="kpi-yday">—</span><span class="kpi-delta" id="kpi-yday-delta">&nbsp;</span></div>
+          <div class="kpi-card"><span class="kpi-label">Ultimi 30 giorni</span><span class="kpi-value" id="kpi-30d">—</span><span class="kpi-delta" id="kpi-30d-delta">&nbsp;</span></div>
+          <div class="kpi-card"><span class="kpi-label">Anno corrente</span><span class="kpi-value" id="kpi-year">—</span><span class="kpi-delta" id="kpi-year-delta">&nbsp;</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <div class="section-head">
+        <div><span class="panel-num">04</span><h3>Andamento</h3></div>
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" data-range="day" aria-selected="true">Giorno</button>
+          <button class="tab" role="tab" data-range="month" aria-selected="false">Mese</button>
+          <button class="tab" role="tab" data-range="year" aria-selected="false">Anno</button>
+        </div>
+      </div>
+      <div class="chart-main">
+        <canvas id="chart-trend" width="1200" height="340"></canvas>
+        <div class="chart-empty" id="chart-empty">Carico dati&hellip;</div>
+      </div>
+      <div class="chart-legend" id="chart-legend"></div>
+    </section>
+
+    <section class="stats-section grid-2">
+      <div class="sub-card">
+        <div class="section-head compact">
+          <div><span class="panel-num">05</span><h3>Giorni della settimana</h3></div>
+          <span class="eyebrow">ultimi 12 mesi</span>
+        </div>
+        <div class="weekdays" id="weekdays"></div>
+      </div>
+      <div class="sub-card">
+        <div class="section-head compact">
+          <div><span class="panel-num">06</span><h3>Mesi dell'anno</h3></div>
+          <span class="eyebrow">media storica</span>
+        </div>
+        <div class="months-bar">
+          <canvas id="chart-months" width="600" height="190"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <div class="section-head">
+        <div><span class="panel-num">07</span><h3>Classifica contatori <span class="section-ctx" id="rank-ctx">&mdash; totale storico</span></h3></div>
+        <div class="tabs" role="tablist">
+          <button class="tab active" role="tab" data-rank="total" aria-selected="true">Totale</button>
+          <button class="tab" role="tab" data-rank="year" aria-selected="false">Anno</button>
+          <button class="tab" role="tab" data-rank="lastDay" aria-selected="false">Ieri</button>
+        </div>
+      </div>
+      <div class="rank-table-wrap">
+        <table class="rank-table" id="rank-table">
+          <thead>
+            <tr><th class="col-rank">#</th><th class="col-name">Contatore</th><th class="col-bar"></th><th class="col-val">Passaggi</th><th class="col-from">Attivo dal</th></tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5" class="loading-row">Carico contatori&hellip;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <div class="section-head">
+        <div><span class="panel-num">08</span><h3>Esplora per data <span class="section-ctx" id="day-ctx">&mdash; seleziona un giorno</span></h3></div>
+        <div class="day-controls">
+          <button class="day-step" id="day-prev" aria-label="Giorno precedente">&larr;</button>
+          <input type="date" id="day-picker" class="day-input" aria-label="Seleziona data" />
+          <button class="day-step" id="day-next" aria-label="Giorno successivo">&rarr;</button>
+        </div>
+      </div>
+
+      <div class="day-summary" id="day-summary">
+        <div class="day-card"><span class="day-label">Totale città</span><span class="day-value" id="day-total">—</span><span class="day-meta" id="day-vs-avg">&nbsp;</span></div>
+        <div class="day-card"><span class="day-label">Postazione top</span><span class="day-value" id="day-top-name">—</span><span class="day-meta" id="day-top-val">&nbsp;</span></div>
+        <div class="day-card"><span class="day-label">Postazioni con dato</span><span class="day-value" id="day-active">—</span><span class="day-meta" id="day-active-meta">&nbsp;</span></div>
+      </div>
+
+      <div class="rank-table-wrap">
+        <table class="rank-table" id="day-table">
+          <thead>
+            <tr><th class="col-rank">#</th><th class="col-name">Contatore</th><th class="col-bar"></th><th class="col-val">Passaggi</th><th class="col-from">Tipo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5" class="loading-row">Seleziona una data per caricare il breakdown.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="stats-footer">
+      <div><span class="src-label">Fonte dati</span><a href="https://data.eco-counter.com/ParcPublic/?id=6771" target="_blank" rel="noreferrer">Eco-Counter &middot; Comune di Torino (id 6771)</a></div>
+      <div><span class="src-label">Aggiornamento</span><span class="mono" id="update-time">—</span></div>
+    </footer>
+  </main>
+
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <span class="spinner"></span>
+    <span class="loader-text">Carico i dati&hellip;</span>
+  </div>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script>
+    import "../scripts/config";
+    import "../scripts/stats";
+  </script>
+</Base>

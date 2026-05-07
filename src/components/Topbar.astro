@@ -1,0 +1,43 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+  active: "map" | "stats" | "fonti";
+  /** Optional slot rendered on the right side (metrics, eyebrow, etc) */
+}
+
+const { active } = Astro.props;
+
+const links = [
+  { id: "map", href: "/", label: "Mappa" },
+  { id: "stats", href: "/stats", label: "Statistiche" },
+  { id: "fonti", href: "/fonti", label: "Fonti" },
+] as const;
+---
+<header class="topbar">
+  <div class="brand">
+    <div class="logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="5.5" cy="17.5" r="3.5"></circle>
+        <circle cx="18.5" cy="17.5" r="3.5"></circle>
+        <path d="M15 6l-3 11.5M6 6h4l3 5h5"></path>
+        <circle cx="15" cy="5" r="1"></circle>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="eyebrow">Torino &middot; mobilità ciclistica</span>
+      <h1>Ciclabili<span class="accent">.</span></h1>
+    </div>
+  </div>
+
+  <div class="topbar-center">
+    <nav class="page-nav" aria-label="Navigazione">
+      {links.map((l) => (
+        <a href={l.href} class={`nav-link${active === l.id ? " active" : ""}`}>{l.label}</a>
+      ))}
+    </nav>
+    <ThemeToggle />
+  </div>
+
+  <slot name="right" />
+</header>

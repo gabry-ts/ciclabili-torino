@@ -1,0 +1,24 @@
+{
+  "name": "ciclabili-torino",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.19",
+    "chart.js": "^4.4.6",
+    "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/leaflet": "^1.9.14",
+    "typescript": "^5.7.2"
+  }
+}

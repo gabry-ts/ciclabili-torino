@@ -1,0 +1,32 @@
+# Astro
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backend (local cache, secrets)
+backend/__pycache__/
+backend/*.pyc
+backend/.env

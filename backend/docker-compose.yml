@@ -1,0 +1,22 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis-data:/data
+
+  proxy:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      CACHE_TTL: "86400"
+      ALLOWED_ORIGINS: "http://localhost:4321,http://127.0.0.1:4321,http://localhost:8765,http://127.0.0.1:8765"
+
+volumes:
+  redis-data:

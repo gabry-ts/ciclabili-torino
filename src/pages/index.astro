@@ -1,0 +1,209 @@
+---
+import Base from "../layouts/Base.astro";
+import Topbar from "../components/Topbar.astro";
+---
+<Base title="Ciclabili Torino — mappa & contatori">
+  <Topbar active="map">
+    <nav slot="right" class="metrics" id="metrics" aria-label="Statistiche in tempo reale">
+      <div class="metric">
+        <span class="metric-label">Contatori</span>
+        <span class="metric-value" id="m-counters">—</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Passaggi ieri</span>
+        <span class="metric-value accent-text" id="m-lastday">—</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Totale storico</span>
+        <span class="metric-value" id="m-total">—</span>
+      </div>
+    </nav>
+  </Topbar>
+
+  <main class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Pannello laterale">
+      <section class="panel">
+        <div class="panel-head">
+          <span class="panel-num">01</span>
+          <h2>Infrastruttura</h2>
+        </div>
+        <ul class="legend" id="legend">
+          <li data-cat="cycleway"><span class="swatch"></span><span class="legend-name">Pista dedicata</span><span class="legend-count" id="c-cycleway">—</span></li>
+          <li data-cat="track"><span class="swatch"></span><span class="legend-name">Corsia protetta</span><span class="legend-count" id="c-track">—</span></li>
+          <li data-cat="lane"><span class="swatch"></span><span class="legend-name">Corsia su strada</span><span class="legend-count" id="c-lane">—</span></li>
+          <li data-cat="shared_lane"><span class="swatch"></span><span class="legend-name">Corsia promiscua</span><span class="legend-count" id="c-shared_lane">—</span></li>
+          <li data-cat="designated_path"><span class="swatch"></span><span class="legend-name">Ciclopedonale</span><span class="legend-count" id="c-designated_path">—</span></li>
+        </ul>
+        <div class="filters">
+          <label><input type="checkbox" data-filter-cat="cycleway" checked /><span>Dedicata</span></label>
+          <label><input type="checkbox" data-filter-cat="track" checked /><span>Protetta</span></label>
+          <label><input type="checkbox" data-filter-cat="lane" checked /><span>Su strada</span></label>
+          <label><input type="checkbox" data-filter-cat="shared_lane" checked /><span>Promiscua</span></label>
+          <label><input type="checkbox" data-filter-cat="designated_path" checked /><span>Ciclopedonale</span></label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span class="panel-num">02</span>
+          <h2>Top contatori &mdash; ieri</h2>
+        </div>
+        <ol class="counter-list" id="counter-list">
+          <li class="placeholder">Caricamento&hellip;</li>
+        </ol>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span class="panel-num">03</span>
+          <h2>Heatmap oraria</h2>
+        </div>
+        <div class="heat-controls">
+          <label class="heat-toggle">
+            <input type="checkbox" id="heat-enabled" />
+            <span>Attiva heatmap</span>
+          </label>
+          <div class="heat-fields" id="heat-fields">
+            <div class="heat-field"><span class="heat-label">Da</span><input type="date" id="heat-from" class="heat-date" /></div>
+            <div class="heat-field"><span class="heat-label">A</span><input type="date" id="heat-to" class="heat-date" /></div>
+            <div class="heat-warn" id="heat-warn"></div>
+            <button class="heat-load" id="heat-load">Carica intervallo</button>
+          </div>
+          <div class="heat-player" id="heat-player" hidden>
+            <div class="heat-time" id="heat-time">—</div>
+            <input type="range" id="heat-slider" class="heat-slider" min="0" max="0" step="1" value="0" />
+            <div class="heat-actions">
+              <button class="heat-play" id="heat-play" aria-label="Play">&#9654;</button>
+              <button class="heat-speed" id="heat-speed" aria-label="Velocità">1&times;</button>
+              <span class="heat-meta" id="heat-meta"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span class="panel-num">04</span>
+          <h2>Segnala un problema</h2>
+        </div>
+        <div class="report-controls">
+          <label class="heat-toggle">
+            <input type="checkbox" id="report-enabled" />
+            <span>Attiva segnalazioni</span>
+          </label>
+          <label class="heat-toggle subdued">
+            <input type="checkbox" id="report-show" checked />
+            <span>Mostra segnalazioni esistenti</span>
+          </label>
+          <div class="report-flow" id="report-flow" hidden>
+            <div class="report-step" data-step="position">
+              <div class="report-step-head"><span class="step-num">1</span><span>Dove è il problema?</span></div>
+              <div class="position-options">
+                <button class="pos-btn" id="pos-map" data-mode="map">
+                  <svg class="pos-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"></path>
+                    <circle cx="12" cy="9" r="2.5"></circle>
+                  </svg>
+                  <span>Tappa la mappa</span>
+                </button>
+                <button class="pos-btn" id="pos-gps" data-mode="gps">
+                  <svg class="pos-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 1v3M12 20v3M1 12h3M20 12h3"></path>
+                  </svg>
+                  <span>Usa la mia posizione</span>
+                </button>
+                <div class="pos-search">
+                  <input type="text" id="pos-input" placeholder="Cerca via, piazza, incrocio&hellip;" autocomplete="off" />
+                  <ul class="pos-results" id="pos-results" hidden></ul>
+                </div>
+              </div>
+              <div class="position-current" id="position-current" hidden>
+                <span class="pos-label">Selezionato</span>
+                <span class="pos-text" id="position-text">—</span>
+                <button class="pos-clear" id="position-clear" aria-label="Rimuovi posizione">&times;</button>
+              </div>
+            </div>
+
+            <div class="report-step" data-step="similar" hidden>
+              <div class="report-step-head"><span class="step-num">2</span><span>Forse è una di queste?</span></div>
+              <ul class="similar-list" id="similar-list"></ul>
+              <button class="report-secondary" id="similar-skip">No, è un nuovo problema &rarr;</button>
+            </div>
+
+            <div class="report-step" data-step="form" hidden>
+              <div class="report-step-head"><span class="step-num">3</span><span>Descrivi il problema</span></div>
+              <div class="report-field">
+                <label class="report-label" for="report-cat">Categoria</label>
+                <select id="report-cat" class="report-select">
+                  <option value="interruzione">Interruzione pista</option>
+                  <option value="pavimento">Pavimento dissestato / buche</option>
+                  <option value="segnaletica">Segnaletica mancante o sbagliata</option>
+                  <option value="ostacolo">Ostacolo / parcheggio abusivo</option>
+                  <option value="illuminazione">Illuminazione insufficiente</option>
+                  <option value="incrocio">Incrocio pericoloso</option>
+                  <option value="altro">Altro</option>
+                </select>
+              </div>
+              <div class="report-field">
+                <label class="report-label" for="report-desc">Descrizione <small>(min 20 caratteri)</small></label>
+                <textarea id="report-desc" class="report-textarea" rows="4" maxlength="500" placeholder="Es: la pista in via X si interrompe all'incrocio con via Y, devo entrare nel traffico"></textarea>
+                <span class="report-counter"><span id="report-count">0</span>/500</span>
+              </div>
+              <div class="report-field">
+                <label class="report-label">Foto <small>(max 3, ridimensionate in locale)</small></label>
+                <div class="photo-dropzone" id="photo-dropzone">
+                  <input type="file" id="photo-input" accept="image/*" multiple capture="environment" hidden />
+                  <button class="photo-add" id="photo-add">&#43; Aggiungi foto</button>
+                  <div class="photo-thumbs" id="photo-thumbs"></div>
+                </div>
+              </div>
+              <div class="report-actions">
+                <button class="report-secondary" id="report-cancel">Annulla</button>
+                <button class="report-submit" id="report-submit" disabled>Invia segnalazione</button>
+              </div>
+              <div class="report-feedback" id="report-feedback"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel note">
+        <div class="panel-head">
+          <span class="panel-num">05</span>
+          <h2>Fonti</h2>
+        </div>
+        <p><span class="src-label">Geometrie</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">&copy; OpenStreetMap</a></p>
+        <p><span class="src-label">Passaggi</span><a href="https://data.eco-counter.com/ParcPublic/?id=6771" target="_blank" rel="noreferrer">Eco-Counter &middot; Comune di Torino</a></p>
+      </section>
+    </aside>
+
+    <div class="map-wrap">
+      <div id="map" role="application" aria-label="Mappa delle ciclabili di Torino"></div>
+      <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Mostra o nascondi pannello">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <span class="spinner"></span>
+    <span class="loader-text">Carico i dati&hellip;</span>
+  </div>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" slot="head" />
+
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script>
+    import "../scripts/config";
+    import "../scripts/map";
+  </script>
+</Base>

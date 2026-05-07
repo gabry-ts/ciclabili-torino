@@ -1,0 +1,38 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - "no"
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+    volumes:
+      - redis-data:/data
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      CACHE_TTL: "86400"
+      # Behind ingress, not directly exposed: any origin is fine.
+      ALLOWED_ORIGINS: "*"
+
+  ingress:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  redis-data:

@@ -1,0 +1,15 @@
+---
+// Inline script that sets data-theme BEFORE first paint.
+// Must be the first thing in <head> to avoid flash of wrong theme.
+---
+<script is:inline>
+  (function () {
+    try {
+      var stored = localStorage.getItem("theme");
+      var t = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  })();
+</script>
