@@ -2443,31 +2443,54 @@ a:hover { border-bottom-color: var(--accent); }
   .metric-label { font-size: 0.55rem; letter-spacing: 0.08em; }
   .metric-value { font-size: 1rem; }
 
-  /* ---- Sidebar = bottom-anchored slide-in drawer ---- */
+  /* ---- Sidebar = full-opaque slide-in drawer ---- */
   .layout { position: relative; }
   .sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: min(90vw, 380px);
-    flex: none;
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: min(90vw, 380px) !important;
+    flex: none !important;
     z-index: 560;
     transform: translateX(-100%);
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
-    padding: max(1rem, env(safe-area-inset-top)) 1rem max(1.25rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
-    background: var(--surface);
-    backdrop-filter: none;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.45);
+    padding: max(1rem, env(safe-area-inset-top)) 1rem max(1.25rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)) !important;
+    background: var(--surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     -webkit-overflow-scrolling: touch;
+    border-right: 1px solid var(--border);
   }
   .sidebar.open { transform: translateX(0); }
+
+  /* Sidebar toggle = bottom-right floating button (out of the way of zoom controls) */
   .sidebar-toggle {
     display: flex;
-    width: 48px;
-    height: 48px;
-    top: max(14px, env(safe-area-inset-top));
-    left: max(14px, env(safe-area-inset-left));
+    width: 52px;
+    height: 52px;
+    top: auto;
+    bottom: max(20px, env(safe-area-inset-bottom));
+    right: max(16px, env(safe-area-inset-right));
+    left: auto;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+  }
+  .sidebar-toggle:hover { color: var(--accent-ink); }
+
+  /* Leaflet zoom controls: keep top-left, with safe area */
+  .leaflet-top.leaflet-left {
+    top: max(12px, env(safe-area-inset-top));
+    left: max(12px, env(safe-area-inset-left));
+  }
+
+  /* Attribution: lift above the floating toggle */
+  .leaflet-control-attribution {
+    margin-bottom: max(78px, calc(env(safe-area-inset-bottom) + 70px)) !important;
   }
 
   /* Map fills viewport minus topbar */
