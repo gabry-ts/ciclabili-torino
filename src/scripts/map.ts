@@ -429,7 +429,31 @@
   const escapeHtml = (s) => String(s || "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 
   const sidebar = document.getElementById("sidebar");
-  document.getElementById("sidebar-toggle").addEventListener("click", () => sidebar.classList.toggle("open"));
+  const sidebarToggleBtn = document.getElementById("sidebar-toggle");
+  const backdrop = document.createElement("button");
+  backdrop.className = "sidebar-backdrop";
+  backdrop.setAttribute("aria-label", "Chiudi pannello");
+  backdrop.type = "button";
+  document.body.appendChild(backdrop);
+
+  const setSidebarOpen = (open) => {
+    sidebar.classList.toggle("open", open);
+    backdrop.classList.toggle("visible", open);
+    document.body.classList.toggle("no-scroll", open && window.innerWidth <= 768);
+  };
+
+  sidebarToggleBtn.addEventListener("click", () => setSidebarOpen(!sidebar.classList.contains("open")));
+  backdrop.addEventListener("click", () => setSidebarOpen(false));
+
+  // Close on Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sidebar.classList.contains("open")) setSidebarOpen(false);
+  });
+
+  // Close on map interaction (mobile UX nicety)
+  map.on("click dragstart", () => {
+    if (window.innerWidth <= 768 && sidebar.classList.contains("open")) setSidebarOpen(false);
+  });
 
   // ---- Heatmap (hourly) ------------------------------------------------
   const heatRoot = document.querySelector(".heat-controls");
