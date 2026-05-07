@@ -2479,11 +2479,8 @@ a:hover { border-bottom-color: var(--accent); }
   }
   .sidebar-toggle:hover { color: var(--accent-ink); }
 
-  /* Leaflet zoom controls: keep top-left, with safe area */
-  .leaflet-top.leaflet-left {
-    top: max(12px, env(safe-area-inset-top));
-    left: max(12px, env(safe-area-inset-left));
-  }
+  /* Hide Leaflet zoom buttons on mobile — pinch-to-zoom is enough */
+  .leaflet-control-zoom { display: none !important; }
 
   /* Attribution: lift above the floating toggle */
   .leaflet-control-attribution {
